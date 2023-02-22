@@ -5,7 +5,7 @@ public class MainEvolucion {
 	 private static Cromosoma[] cromosomas; // Array de cromosomas
 
 	public static void main(String[] args) {
-		generar(10);
+		generar(5);
 		evaluar();
 		
 		for (int i = 0; i < cromosomas.length; i++) {
@@ -29,14 +29,13 @@ public class MainEvolucion {
 		cromosomas = new Cromosoma[poblacion];
 		for (int i = 0; i < poblacion; i++) {
 			cromosomas[i] = new Cromosoma((int)(Math.random()*10+1),(int)(Math.random()*10+1),(int)(Math.random()*10+1),(int)(Math.random()*10+1));
-			System.out.println(cromosomas[i].toString());
 		}
 	}
 	
 	private static void evaluar() {
 		int aptitude = 0; // Se inicializa a cero
 		for (int i = 0; i < cromosomas.length; i++) {
-			aptitude = cromosomas[i].getGen1() + cromosomas[i].getGen1() + cromosomas[i].getGen1() + cromosomas[i].getGen1();
+			aptitude = cromosomas[i].getGen1() + cromosomas[i].getGen2() + cromosomas[i].getGen3()*2 - cromosomas[i].getGen4();
 			cromosomas[i].setAptitud(aptitude);
 		}
 	}
