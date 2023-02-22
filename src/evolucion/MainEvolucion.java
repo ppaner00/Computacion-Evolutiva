@@ -58,7 +58,19 @@ public class MainEvolucion {
 	}
 	
 	private static void seleccionar() { // Ruleta con pesos
-		// TODO
+		Cromosoma[] copia = cromosomas.clone();
+		float[] probabilidades = new float[cromosomas.length]; // Array con las frecuencias relativas
+		int sumaAptitudes = 0;
+		
+		for (int i = 0; i < cromosomas.length; i++) {
+			sumaAptitudes += cromosomas[i].getAptitud();
+		}
+		
+		for (int i = 0; i < cromosomas.length; i++) {
+			probabilidades[i] = cromosomas[i].getAptitud()/sumaAptitudes;
+		}
+		
+		
 	}
 	
 	private static void crossover(float probabilidad) {
