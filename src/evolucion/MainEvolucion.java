@@ -8,9 +8,11 @@ public class MainEvolucion {
 	private static Cromosoma[] cromosomas; // Array de cromosomas
 	private static final float pc = 0.95f; // Probabilidad de crossover
 	private static final float pm = 0.25f; // Probabilidad de mutación
+	private static final int poblacion = 100; // Numero de individuos
+
 
 	public static void main(String[] args) {
-		generar(5);
+		generar(poblacion);
 		evaluar();
 		for (int i = 0; i < cromosomas.length; i++) {
 			System.out.println(cromosomas[i].toString());
