@@ -76,10 +76,17 @@ public class MainEvolucion {
 		int min = aptitudes[0];
 		int max = aptitudes[aptitudes.length - 1];
 		int pos = -1; // Posicion del cromosoma elegido
+		
 		System.out.println("Numeros random: ");
+		
+		
 		for (int i=0; i<cromosomas.length;i++) { // Para cada cromosoma
 			int random = (int) (Math.random() * (max - min + 1)) + min; // Genera un número entre las aptitudes
+			
+			
 			System.out.print(random + ",");
+			
+			
 			for (int j = 0; j < aptitudes.length - 1; j++) {
 				int inf = aptitudes[j];
 				int sup = aptitudes[j+1];
@@ -87,9 +94,17 @@ public class MainEvolucion {
 					pos = j; // Copiamos la posicion donde entre
 				}
 			}
-			cromosomas [i] = copia [pos];
+			cromosomas [i].setGen1(copia [pos].getGen1());
+			cromosomas [i].setGen2(copia [pos].getGen2());
+			cromosomas [i].setGen3(copia [pos].getGen3());
+			cromosomas [i].setGen4(copia [pos].getGen4());
+			cromosomas [i].setAptitud(copia [pos].getAptitud());
 		}
+		
+		
 		System.out.println("");
+		
+		
 	}
 
 	private static void crossover(float probabilidad) {
