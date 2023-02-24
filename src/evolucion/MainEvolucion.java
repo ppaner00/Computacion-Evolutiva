@@ -8,30 +8,31 @@ public class MainEvolucion {
 	private static Cromosoma[] cromosomas; // Array de cromosomas
 	private static final float pc = 0.95f; // Probabilidad de crossover
 	private static final float pm = 0.25f; // Probabilidad de mutación
-	private static final int poblacion = 100; // Numero de individuos
+	private static final int poblacion = 10; // Numero de individuos
 
 
 	public static void main(String[] args) {
+		
+		System.out.println("----GENERACION----");
 		generar(poblacion);
 		evaluar();
 		for (int i = 0; i < cromosomas.length; i++) {
 			System.out.println(cromosomas[i].toString());
 		}
-		System.out.println("-------------------------------");
+		System.out.println("----SELECCION----");
 		seleccionar();
 		for (int i = 0; i < cromosomas.length; i++) {
 			System.out.println(cromosomas[i].toString());
 		}
-		System.out.println("-------------------------------");
-
+		System.out.println("----CROSSOVER----");
 		crossover(pc);
 		evaluar();
 		for (int i = 0; i < cromosomas.length; i++) {
 			System.out.println(cromosomas[i].toString());
 		}
+		System.out.println("----MUTACION----");
 		mutar(pm);
 		evaluar();
-		System.out.println("-------------------------------");
 		for (int i = 0; i < cromosomas.length; i++) {
 			System.out.println(cromosomas[i].toString());
 		}
@@ -59,40 +60,10 @@ public class MainEvolucion {
 		}
 	}
 
-	// private static void seleccionar() { // Ruleta con pesos
-	// Cromosoma[] copia = cromosomas.clone();
-	// float[] probabilidades = new float[cromosomas.length]; // Array con las
-	// frecuencias relativas
-	// int sumaAptitudes = 0;
-	//
-	// for (int i = 0; i < cromosomas.length; i++) {
-	// sumaAptitudes += cromosomas[i].getAptitud();
-	// }
-	//
-	// for (int i = 0; i < cromosomas.length; i++) {
-	// probabilidades[i] = cromosomas[i].getAptitud()/sumaAptitudes;
-	// }
-	// }
-
-	// private static void seleccionar() { // Ruleta con pesos
-	// int minApt = cromosomas[0].getAptitud();
-	// int maxApt = cromosomas[0].getAptitud();
-	//
-	// for (int i = 1; i < cromosomas.length; i++) {
-	// if (cromosomas[i].getAptitud() < minApt) {
-	// minApt = cromosomas[i].getAptitud();
-	// }
-	// }
-	//
-	// for (int i = 1; i < cromosomas.length; i++) {
-	// if (cromosomas[i].getAptitud() > maxApt) {
-	// maxApt = cromosomas[i].getAptitud();
-	// }
-	// }
-	// }
-
 	private static void seleccionar() { // Ruleta con pesos
-
+		Cromosoma[] copia = cromosomas.clone(); // Array copia ordenado
+		sort(copia);
+		
 		int[] aptitudes = new int[cromosomas.length];
 
 		// Recorremos el array de objetos Cromosoma y obtenemos sus aptitudes
@@ -100,24 +71,26 @@ public class MainEvolucion {
 			aptitudes[i] = cromosomas[i].getAptitud();
 		}
 		sort(aptitudes);
-
-	}
-
-	// Método de ordenación de burbuja sacado de Internet
-	public static void sort(int[] array) {
-		int n = array.length;
-
-		// Recorremos el array varias veces para ordenarlo
-		for (int i = 0; i < n - 1; i++) {
-			for (int j = 0; j < n - i - 1; j++) {
-				// Si el elemento actual es mayor que el siguiente, los intercambiamos
-				if (array[j] > array[j + 1]) {
-					int temp = array[j];
-					array[j] = array[j + 1];
-					array[j + 1] = temp;
+		
+		// TODO arreglar el valor de aptitud maximo porque tendra probabilidad 1/range
+		
+		int min = aptitudes[0];
+		int max = aptitudes[aptitudes.length - 1];
+		int pos = -1; // Posicion del cromosoma elegido
+		System.out.println("Numeros random: ");
+		for (int i=0; i<cromosomas.length;i++) { // Para cada cromosoma
+			int random = (int) (Math.random() * (max - min + 1)) + min; // Genera un número entre las aptitudes
+			System.out.print(random + ",");
+			for (int j = 0; j < aptitudes.length - 1; j++) {
+				int inf = aptitudes[j];
+				int sup = aptitudes[j+1];
+				if ((random >= inf && random < sup)||(random==max)) { // [inf,sup)
+					pos = j; // Copiamos la posicion donde entre
 				}
 			}
+			cromosomas [i] = copia [pos];
 		}
+		System.out.println("");
 	}
 
 	private static void crossover(float probabilidad) {
@@ -168,5 +141,44 @@ public class MainEvolucion {
 			}
 		}
 	}
+	
+	// METODOS AUXILIARES PARA ORDENAR ARRAYS PARA LA RULETA DE PESOS
+	// Método de ordenación de burbuja sacado de Internet
+	public static void sort(int[] array) {
+		int n = array.length;
+
+		// Recorremos el array varias veces para ordenarlo
+		for (int i = 0; i < n - 1; i++) {
+			for (int j = 0; j < n - i - 1; j++) {
+				// Si el elemento actual es mayor que el siguiente, los intercambiamos
+				if (array[j] > array[j + 1]) {
+					int temp = array[j];
+					array[j] = array[j + 1];
+					array[j + 1] = temp;
+				}
+			}
+		}
+	}
+	
+	// Método de ordenación de burbuja modificado para Cromosoma
+	public static void sort(Cromosoma[] array) {
+		int n = array.length;
+
+		// Recorremos el array varias veces para ordenarlo
+		for (int i = 0; i < n - 1; i++) {
+			for (int j = 0; j < n - i - 1; j++) {
+				// Si el elemento actual es mayor que el siguiente, los intercambiamos
+				if (array[j].getAptitud() > array[j + 1].getAptitud()) {
+					Cromosoma temp = array[j];
+					array[j] = array[j + 1];
+					array[j + 1] = temp;
+				}
+			}
+		}
+	}
+	
+	
+	
+	
 
 }
