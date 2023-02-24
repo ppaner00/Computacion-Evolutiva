@@ -46,8 +46,7 @@ public class MainEvolucion {
 		// Creación de n objetos de la clase Cromosoma
 		cromosomas = new Cromosoma[poblacion];
 		for (int i = 0; i < poblacion; i++) {
-			cromosomas[i] = new Cromosoma((int) (Math.random() * 10 + 1), (int) (Math.random() * 11),
-					(int) (Math.random() * 11), (int) (Math.random() * 11));
+			cromosomas[i] = new Cromosoma((int) (Math.random() * 11), (int) (Math.random() * 11),(int) (Math.random() * 11), (int) (Math.random() * 11));
 		}
 	}
 
