@@ -8,33 +8,44 @@ public class MainEvolucion {
 	private static Cromosoma[] cromosomas; // Array de cromosomas
 	private static final float pc = 0.95f; // Probabilidad de crossover
 	private static final float pm = 0.25f; // Probabilidad de mutación
-	private static final int poblacion = 10; // Numero de individuos
+	private static final int poblacion = 5; // Numero de individuos
 
 
 	public static void main(String[] args) {
 		
-		System.out.println("----GENERACION----");
+//		System.out.println("----GENERACION----");
+//		generar(poblacion);
+//		evaluar();
+//		for (int i = 0; i < cromosomas.length; i++) {
+//			System.out.println(cromosomas[i].toString());
+//		}
+//		System.out.println("----SELECCION----");
+//		seleccionar();
+//		for (int i = 0; i < cromosomas.length; i++) {
+//			System.out.println(cromosomas[i].toString());
+//		}
+//		System.out.println("----CROSSOVER----");
+//		crossover(pc);
+//		evaluar();
+//		for (int i = 0; i < cromosomas.length; i++) {
+//			System.out.println(cromosomas[i].toString());
+//		}
+//		System.out.println("----MUTACION----");
+//		mutar(pm);
+//		evaluar();
+//		for (int i = 0; i < cromosomas.length; i++) {
+//			System.out.println(cromosomas[i].toString());
+//		}
+
 		generar(poblacion);
-		evaluar();
-		for (int i = 0; i < cromosomas.length; i++) {
-			System.out.println(cromosomas[i].toString());
-		}
-		System.out.println("----SELECCION----");
-		seleccionar();
-		for (int i = 0; i < cromosomas.length; i++) {
-			System.out.println(cromosomas[i].toString());
-		}
-		System.out.println("----CROSSOVER----");
-		crossover(pc);
-		evaluar();
-		for (int i = 0; i < cromosomas.length; i++) {
-			System.out.println(cromosomas[i].toString());
-		}
-		System.out.println("----MUTACION----");
-		mutar(pm);
-		evaluar();
-		for (int i = 0; i < cromosomas.length; i++) {
-			System.out.println(cromosomas[i].toString());
+		
+		for(int i = 0;i<5;i++) {
+			System.out.println("Generación "+i);
+			evaluar();
+			mostrar();
+			seleccionar();
+			crossover(pc);
+			mutar(pm);
 		}
 
 	}
@@ -59,53 +70,32 @@ public class MainEvolucion {
 		}
 	}
 
-	private static void seleccionar() { // Ruleta con pesos
-		Cromosoma[] copia = cromosomas.clone(); // Array copia ordenado
-		sort(copia);
-		
-		int[] aptitudes = new int[cromosomas.length];
+	private static void seleccionar() {
+	    Cromosoma[] copia = cromosomas.clone();
+	    sort(copia);
 
-		// Recorremos el array de objetos Cromosoma y obtenemos sus aptitudes
-		for (int i = 0; i < cromosomas.length; i++) {
-			aptitudes[i] = cromosomas[i].getAptitud();
-		}
-		sort(aptitudes);
-		
-		// TODO arreglar el valor de aptitud maximo porque tendra probabilidad 1/range
-		
-		int min = aptitudes[0];
-		int max = aptitudes[aptitudes.length - 1];
-		int pos = -1; // Posicion del cromosoma elegido
-		
-		System.out.println("Numeros random: ");
-		
-		
-		for (int i=0; i<cromosomas.length;i++) { // Para cada cromosoma
-			int random = (int) (Math.random() * (max - min + 1)) + min; // Genera un número entre las aptitudes
-			
-			
-			System.out.print(random + ",");
-			
-			
-			for (int j = 0; j < aptitudes.length - 1; j++) {
-				int inf = aptitudes[j];
-				int sup = aptitudes[j+1];
-				if ((random >= inf && random < sup)||(random==max)) { // [inf,sup)
-					pos = j; // Copiamos la posicion donde entre
-				}
-			}
-			cromosomas [i].setGen1(copia [pos].getGen1());
-			cromosomas [i].setGen2(copia [pos].getGen2());
-			cromosomas [i].setGen3(copia [pos].getGen3());
-			cromosomas [i].setGen4(copia [pos].getGen4());
-			cromosomas [i].setAptitud(copia [pos].getAptitud());
-		}
-		
-		
-		System.out.println("");
-		
-		
+	    double sumaAptitudes = 0.0;
+	    for (Cromosoma cromosoma : cromosomas) {
+	        sumaAptitudes += cromosoma.getAptitud();
+	    }
+
+	    Cromosoma[] seleccionados = new Cromosoma[cromosomas.length];
+
+	    for (int i = 0; i < cromosomas.length; i++) {
+	        double probabilidadAcumulada = 0.0;
+	        double numeroAleatorio = Math.random();
+	        int j = 0;
+
+	        while (j < cromosomas.length && probabilidadAcumulada < numeroAleatorio) {
+	            probabilidadAcumulada += cromosomas[j].getAptitud() / sumaAptitudes;
+	            j++;
+	        }
+
+	        seleccionados[i] = copia[j-1];
+	    }
+	    cromosomas = seleccionados;
 	}
+
 
 	private static void crossover(float probabilidad) {
 		for (int i = 0; i < cromosomas.length - 1; i += 2) {
@@ -157,7 +147,7 @@ public class MainEvolucion {
 	}
 	
 	// METODOS AUXILIARES PARA ORDENAR ARRAYS PARA LA RULETA DE PESOS
-	// Método de ordenación de burbuja sacado de Internet
+	// Método de ordenación de burbuja
 	public static void sort(int[] array) {
 		int n = array.length;
 
@@ -189,6 +179,13 @@ public class MainEvolucion {
 				}
 			}
 		}
+	}
+	
+	
+	public static void mostrar() {
+		for (int i = 0; i < cromosomas.length; i++) {
+		System.out.println(cromosomas[i].toString());
+	}
 	}
 	
 	
