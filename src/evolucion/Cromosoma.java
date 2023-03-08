@@ -53,6 +53,7 @@ public class Cromosoma {
 		this.aptitud = aptitud;
 	}
 
+	
 	@Override
 	public String toString() {
 		return "[" + gen1 + "," + gen2 + "," + gen3 + "," + gen4 + "] con aptitud = " + aptitud;

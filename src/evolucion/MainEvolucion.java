@@ -8,41 +8,51 @@ public class MainEvolucion {
 	private static Cromosoma[] cromosomas; // Array de cromosomas
 	private static final float pc = 0.95f; // Probabilidad de crossover
 	private static final float pm = 0.25f; // Probabilidad de mutación
-	private static final int poblacion = 5; // Numero de individuos
+	private static final int poblacion = 10; // Numero de individuos
 
 
 	public static void main(String[] args) {
 		
-		System.out.println("----GENERACION----");
+
+		
 		generar(poblacion);
-		evaluar();
-		mostrar();
 		
-		System.out.println("----SELECCION----");
-		seleccionar();
-		mostrar();
+		for(int i = 0;i<100;i++) {
+			System.out.println("Generación "+i);
+			System.out.println("----GENERACION----");
+			generar(poblacion);
+			evaluar();
+			mostrar();
+			
+			System.out.println("----SELECCION----");
+			seleccionar();
+			evaluar();
+			mostrar();
+			
+			System.out.println("----CROSSOVER----");
+			crossover(pc);
+			evaluar();
+			mostrar();
+			
+			System.out.println("----MUTACION----");
+			mutar(pm);
+			evaluar();
+			mostrar();
+		}
 		
-		System.out.println("----CROSSOVER----");
-		crossover(pc);
-		evaluar();
-		mostrar();
-		
-		System.out.println("----MUTACION----");
-		mutar(pm);
-		evaluar();
-		mostrar();
-		
-//		generar(poblacion);
-		
-//		for(int i = 0;i<5;i++) {
-//			System.out.println("Generación "+i);
+//		for(int i=0;i<1000;i++) {
+//			//System.out.println("========GENERACION "+i+"========");
+//			generar(poblacion);
 //			evaluar();
-//			mostrar();
+//			//mostrar();
 //			seleccionar();
 //			crossover(pc);
 //			mutar(pm);
+//			if(i==1 || i==999) {
+//				System.out.println("Media: "+media()+" Menor: "+menor()+" Mayor: "+mayor());
+//			}
 //		}
-
+		
 	}
 
 	/**
@@ -65,7 +75,7 @@ public class MainEvolucion {
 		}
 	}
 
-	private static void seleccionar() {
+	private static void seleccionar(){
 	    Cromosoma[] copia = cromosomas.clone();
 	    sort(copia);
 
@@ -73,8 +83,6 @@ public class MainEvolucion {
 	    for (Cromosoma cromosoma : cromosomas) {
 	        sumaAptitudes += cromosoma.getAptitud();
 	    }
-
-	    Cromosoma[] seleccionados = new Cromosoma[cromosomas.length];
 
 	    for (int i = 0; i < cromosomas.length; i++) {
 	        double probabilidadAcumulada = 0.0;
@@ -85,12 +93,14 @@ public class MainEvolucion {
 	            probabilidadAcumulada += cromosomas[j].getAptitud() / sumaAptitudes;
 	            j++;
 	        }
-
-	        seleccionados[i] = copia[j-1];
+	        
+	        cromosomas[i].setGen1(copia[j-1].getGen1());
+	        cromosomas[i].setGen2(copia[j-1].getGen2());
+	        cromosomas[i].setGen3(copia[j-1].getGen3());
+	        cromosomas[i].setGen4(copia[j-1].getGen4());
 	    }
-	    cromosomas = seleccionados.clone();
 	}
-
+	
 
 	private static void crossover(float probabilidad) {
 		for (int i = 0; i < cromosomas.length - 1; i += 2) {
@@ -183,6 +193,34 @@ public class MainEvolucion {
 	}
 	}
 	
+	public static float media() {
+		float media = 0.0f;
+		int total = 0;
+		for (int i = 0; i < cromosomas.length; i++) {
+			total += cromosomas[i].getAptitud();
+		}
+		return total/cromosomas.length;
+	}
+	
+	public static int mayor() {
+		int mayor = cromosomas[0].getAptitud();
+		for (int i = 1; i < cromosomas.length; i++) {
+		 if(cromosomas[i].getAptitud()>mayor) {
+			 mayor = cromosomas[i].getAptitud();
+		 }
+		}
+		return mayor;
+	}
+	
+	public static int menor() {
+		int menor = cromosomas[0].getAptitud();
+		for (int i = 1; i < cromosomas.length; i++) {
+		 if(cromosomas[i].getAptitud()<menor) {
+			 menor = cromosomas[i].getAptitud();
+		 }
+		}
+		return menor;
+	}
 	
 	
 	
