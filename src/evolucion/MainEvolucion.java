@@ -13,40 +13,35 @@ public class MainEvolucion {
 
 	public static void main(String[] args) {
 		
-//		System.out.println("----GENERACION----");
-//		generar(poblacion);
-//		evaluar();
-//		for (int i = 0; i < cromosomas.length; i++) {
-//			System.out.println(cromosomas[i].toString());
-//		}
-//		System.out.println("----SELECCION----");
-//		seleccionar();
-//		for (int i = 0; i < cromosomas.length; i++) {
-//			System.out.println(cromosomas[i].toString());
-//		}
-//		System.out.println("----CROSSOVER----");
-//		crossover(pc);
-//		evaluar();
-//		for (int i = 0; i < cromosomas.length; i++) {
-//			System.out.println(cromosomas[i].toString());
-//		}
-//		System.out.println("----MUTACION----");
-//		mutar(pm);
-//		evaluar();
-//		for (int i = 0; i < cromosomas.length; i++) {
-//			System.out.println(cromosomas[i].toString());
-//		}
-
+		System.out.println("----GENERACION----");
 		generar(poblacion);
+		evaluar();
+		mostrar();
 		
-		for(int i = 0;i<5;i++) {
-			System.out.println("Generación "+i);
-			evaluar();
-			mostrar();
-			seleccionar();
-			crossover(pc);
-			mutar(pm);
-		}
+		System.out.println("----SELECCION----");
+		seleccionar();
+		mostrar();
+		
+		System.out.println("----CROSSOVER----");
+		crossover(pc);
+		evaluar();
+		mostrar();
+		
+		System.out.println("----MUTACION----");
+		mutar(pm);
+		evaluar();
+		mostrar();
+		
+//		generar(poblacion);
+		
+//		for(int i = 0;i<5;i++) {
+//			System.out.println("Generación "+i);
+//			evaluar();
+//			mostrar();
+//			seleccionar();
+//			crossover(pc);
+//			mutar(pm);
+//		}
 
 	}
 
@@ -93,7 +88,7 @@ public class MainEvolucion {
 
 	        seleccionados[i] = copia[j-1];
 	    }
-	    cromosomas = seleccionados;
+	    cromosomas = seleccionados.clone();
 	}
 
 
