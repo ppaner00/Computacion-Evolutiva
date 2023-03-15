@@ -52,6 +52,13 @@ public class Cromosoma {
 	public void setAptitud(int aptitud) {
 		this.aptitud = aptitud;
 	}
+	public void duplicate(Cromosoma copia) {
+		this.aptitud = copia.getAptitud();
+		this.gen1 = copia.getGen1();
+		this.gen2 = copia.getGen2();
+		this.gen3 = copia.getGen3();
+		this.gen4 = copia.getGen4();	
+	}
 
 	
 	@Override
