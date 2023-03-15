@@ -68,7 +68,7 @@ public class MainEvolucion {
 	}
 
 	private static void seleccionar(){
-	    int[] sumaAptitudes = new int[cromosomas.length];
+	    int[] sumaAptitudes = new int[cromosomas.length+1];
 	    Cromosoma auxiliar[] = cromosomas.clone(); 
 	    int random = -1;
 	    
@@ -76,7 +76,7 @@ public class MainEvolucion {
 	    System.out.println("SumaAptitudes[0] = "+sumaAptitudes[0]);
 		for (int i=1;i<sumaAptitudes.length;i++){
 			sumaAptitudes[i] = cromosomas[i-1].getAptitud() + sumaAptitudes[i-1];
-			System.out.println("SumaAptitudes["+(i+1)+"] = "+sumaAptitudes[i]);
+			System.out.println("SumaAptitudes["+i+"] = "+sumaAptitudes[i]);
 		}
 		
 		
@@ -86,12 +86,15 @@ public class MainEvolucion {
 			for(int j=0;j<cromosomas.length-1;j++) {
 				if(random>=sumaAptitudes[j] && random<sumaAptitudes[j+1]) {
 					cromosomas[i].duplicate(auxiliar[j]);
-					System.out.println("He seleccionado en la iteración " + i + "el cromosoma " + cromosomas[i].toString()+"con el random "+ random);
+					System.out.println("He seleccionado en la iteración " + i + " el cromosoma " + cromosomas[i].toString()+" con el random "+ random);
 				}
+				System.out.println("["+sumaAptitudes[j]+","+sumaAptitudes[j+1]+")");
 			}
-			if(random>=sumaAptitudes[sumaAptitudes.length-1]){
+			//System.out.println("El minimo es:"+sumaAptitudes[0]+" el máximo es:"+sumaAptitudes[sumaAptitudes.length-2]);
+			if(random>=sumaAptitudes[sumaAptitudes.length-2]){
 				cromosomas[i].duplicate(auxiliar[auxiliar.length-1]);
-				System.out.println("[ESP]He seleccionado en la iteración " + i + "el cromosoma " + cromosomas[i].toString()+"con el random "+ random);
+				System.out.println("[ESP]He seleccionado en la iteración " + i + " el cromosoma " + cromosomas[i].toString()+"con el random "+ random);
+				System.out.println("["+sumaAptitudes[sumaAptitudes.length-2]+"," + sumaAptitudes[sumaAptitudes.length-1]+")");
 			}
 		}
 	}
