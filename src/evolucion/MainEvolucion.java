@@ -8,41 +8,33 @@ public class MainEvolucion {
 	private static Cromosoma[] cromosomas; // Array de cromosomas
 	private static final float pc = 0.95f; // Probabilidad de crossover
 	private static final float pm = 0.25f; // Probabilidad de mutación
-	private static final int poblacion = 4; // Numero de individuos
+	private static final int poblacion = 20; // Numero de individuos
 
 
 	public static void main(String[] args) {
 		generar(poblacion);
 		
-//		for(int i = 0;i<100;i++) {
+		for(int i = 0;i<100;i++) {
 //			System.out.println("Generación "+i);
 //			System.out.println("----GENERACION----");
-//			generar(poblacion);
-//			evaluar();
-//			mostrar();
-//			
-//			System.out.println("----SELECCION----");
-//			seleccionar();
-//			evaluar();
-//			mostrar();
-//			
-//			System.out.println("----CROSSOVER----");
-//			crossover(pc);
-//			evaluar();
-//			mostrar();
-//			
-//			System.out.println("----MUTACION----");
-//			mutar(pm);
-//			evaluar();
-//			mostrar();
-//		}
-		
-			generar(poblacion);
+			//generar(poblacion);
 			evaluar();
-			mostrar();
-			System.out.println("----SELECCION----");
+			if(i==0 || i==99) {
+				System.out.println("==============================");
+				mostrar();
+			}
+			
 			seleccionar();
-			mostrar();
+			evaluar();
+			
+			crossover(pc);
+			evaluar();
+
+			mutar(pm);
+			evaluar();
+			
+		}
+
 		
 		
 	}
@@ -73,10 +65,10 @@ public class MainEvolucion {
 	    int random = -1;
 	    
 	    sumaAptitudes[0] = 0;
-	    System.out.println("SumaAptitudes[0] = "+sumaAptitudes[0]);
+	    //System.out.println("SumaAptitudes[0] = "+sumaAptitudes[0]);
 		for (int i=1;i<sumaAptitudes.length;i++){
 			sumaAptitudes[i] = cromosomas[i-1].getAptitud() + sumaAptitudes[i-1];
-			System.out.println("SumaAptitudes["+i+"] = "+sumaAptitudes[i]);
+			//System.out.println("SumaAptitudes["+i+"] = "+sumaAptitudes[i]);
 		}
 		
 		
@@ -86,15 +78,15 @@ public class MainEvolucion {
 			for(int j=0;j<cromosomas.length-1;j++) {
 				if(random>=sumaAptitudes[j] && random<sumaAptitudes[j+1]) {
 					cromosomas[i].duplicate(auxiliar[j]);
-					System.out.println("He seleccionado en la iteración " + i + " el cromosoma " + cromosomas[i].toString()+" con el random "+ random);
+					//System.out.println("He seleccionado en la iteración " + i + " el cromosoma " + cromosomas[i].toString()+" con el random "+ random);
 				}
-				System.out.println("["+sumaAptitudes[j]+","+sumaAptitudes[j+1]+")");
+				//System.out.println("["+sumaAptitudes[j]+","+sumaAptitudes[j+1]+")");
 			}
 			//System.out.println("El minimo es:"+sumaAptitudes[0]+" el máximo es:"+sumaAptitudes[sumaAptitudes.length-2]);
 			if(random>=sumaAptitudes[sumaAptitudes.length-2]){
 				cromosomas[i].duplicate(auxiliar[auxiliar.length-1]);
-				System.out.println("[ESP]He seleccionado en la iteración " + i + " el cromosoma " + cromosomas[i].toString()+"con el random "+ random);
-				System.out.println("["+sumaAptitudes[sumaAptitudes.length-2]+"," + sumaAptitudes[sumaAptitudes.length-1]+")");
+				//System.out.println("[ESP]He seleccionado en la iteración " + i + " el cromosoma " + cromosomas[i].toString()+"con el random "+ random);
+				//System.out.println("["+sumaAptitudes[sumaAptitudes.length-2]+"," + sumaAptitudes[sumaAptitudes.length-1]+")");
 			}
 		}
 	}
@@ -110,14 +102,45 @@ public class MainEvolucion {
 			if (cromosoma2 != null) { // Si hay un cromosoma al final simplemente no se cambia y ya
 				// Realizar el intercambio solo si se cumple la probabilidad pc
 				if (Math.random() <= probabilidad) {
-					// Intercambiar los valores del gen1 y el gen2
-					int gen1Aux = cromosoma1.getGen1();
-					cromosoma1.setGen1(cromosoma2.getGen1());
-					cromosoma2.setGen1(gen1Aux);
-
-					int gen2Aux = cromosoma1.getGen2();
-					cromosoma1.setGen2(cromosoma2.getGen2());
-					cromosoma2.setGen2(gen2Aux);
+					int corte = (int)(Math.random()*3+1);
+					int auxiliar = -1;
+					switch (corte) {
+					case 1:
+						//Intercambiar g2,g3,g4
+						//System.out.println("Caso 1 mi rey");
+						auxiliar = cromosoma1.getGen2();
+						cromosoma1.setGen2(cromosoma2.getGen2());
+						cromosoma2.setGen2(auxiliar);
+						
+						auxiliar = cromosoma1.getGen3();
+						cromosoma1.setGen3(cromosoma2.getGen3());
+						cromosoma2.setGen3(auxiliar);
+						
+						auxiliar = cromosoma1.getGen4();
+						cromosoma1.setGen4(cromosoma2.getGen4());
+						cromosoma2.setGen4(auxiliar);
+						break;
+						
+					case 2:
+						//Intercambiar g3,g4
+						//System.out.println("Caso 2 mi rey");
+						auxiliar = cromosoma1.getGen3();
+						cromosoma1.setGen3(cromosoma2.getGen3());
+						cromosoma2.setGen3(auxiliar);
+						
+						auxiliar = cromosoma1.getGen4();
+						cromosoma1.setGen4(cromosoma2.getGen4());
+						cromosoma2.setGen4(auxiliar);
+						break;
+						
+					case 3:
+						//Intercambiar g4
+						//System.out.println("Caso 3 mi rey");
+						auxiliar = cromosoma1.getGen4();
+						cromosoma1.setGen4(cromosoma2.getGen4());
+						cromosoma2.setGen4(auxiliar);
+						break;
+					}
 				}
 			}
 		}
